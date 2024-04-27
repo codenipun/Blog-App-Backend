@@ -1,5 +1,6 @@
 import { db } from "../db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
   // check existing user (registered phone number, email)
@@ -41,7 +42,12 @@ export const login = (req, res) => {
 
         if(!isPasswordCorrect) return res.status(400).json("Invalid Username or Password");
 
-        
+        const token = jwt.sign({id:data[0].id}, "jwtkey");
+
+        const {password, ...other} = data[0];
+        res.cookie("access_token", token, {
+            httpOnly : true
+        }).status(200).json(other);
     })
 
 };
