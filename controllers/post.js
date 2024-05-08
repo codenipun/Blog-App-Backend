@@ -17,4 +17,11 @@ export const getAllPost = (req, res) => {
   });
 };
 
-export const getPostById = (req, res) => {};
+export const getPostById = (req, res) => {
+  const q =
+    "SELECT u.`id` ownerId, `username` owner, u.`img` ownerImg, `title`, `desc`, p.`img` postImg, `date`, p.`cat` FROM posts p JOIN users u ON u.id=p.user_id where p.id=?";
+  db.query(q, [req.params.id], (err, data) => {
+    if (err) res.send(err);
+    return res.status(200).json(data[0]);
+  });
+};
