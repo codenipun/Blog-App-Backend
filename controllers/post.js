@@ -12,9 +12,6 @@ export const addPost = (req, res) => {
       api_secret: "BuP8EdUjqoSa4kAyCS43iweFbgo",
     });
 
-    // Example image path (ensure the image exists at this path)
-    // const imagePath = path.join(__dirname, `../uploads/${req.body.img}`);
-
     // Upload an image
     const uploadResult = await cloudinary.uploader
       .upload(`./uploads/${req.body.img}`, {
