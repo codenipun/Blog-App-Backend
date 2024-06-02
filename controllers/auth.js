@@ -28,7 +28,7 @@ export const register = (req, res) => {
   });
 };
 
- const login = (req, res) => {
+export const login = (req, res) => {
   // Check if the identifier is an email or username
   const identifier = req.body.username;
   const isEmail = identifier.includes('@');
@@ -41,7 +41,7 @@ export const register = (req, res) => {
       // Check Password
       const isPasswordCorrect = bcrypt.compareSync(req.body.password, data[0].password);
 
-      if (!isPasswordCorrect) return res.status(400).json("Invalid Identifier or Password");
+      if (!isPasswordCorrect) return res.status(400).json("Invalid Credentials");
 
       const token = jwt.sign({ id: data[0].id }, "jwtkey");
 
