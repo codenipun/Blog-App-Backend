@@ -122,8 +122,8 @@ export const updatePost = (req, res) => {
 
 export const getAllPost = (req, res) => {
   const q = req.query.cat
-    ? "SELECT * FROM posts WHERE cat=?"
-    : "SELECT * FROM posts";
+    ? "SELECT * FROM posts WHERE cat=? ORDER BY date DESC"
+    : "SELECT * FROM posts ORDER BY date DESC";
   db.query(q, [req.query.cat], (err, data) => {
     if (err) return res.send(err);
 
