@@ -9,8 +9,14 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express()
 app.use(express.json());
-app.use(cookieParser());
+
+// const corsOptions = {
+//   origin: 'http://localhost:3000', // Use the actual URL of your frontend
+//   credentials: true, // Allow cookies to be sent
+// };
+
 app.use(cors());
+app.use(cookieParser());
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

@@ -21,12 +21,12 @@ export const addPost = (req, res) => {
         console.log(error);
       });
 
-    const token = req?.cookies?.access_token;
-    console.log(token);
-    if (!token) return res.status(401).json("Not Authenticated");
+    // const token = req?.cookies?.access_token;
+    // // console.log(token);
+    // if (!token) return res.status(401).json("Not Authenticated");
 
-    jwt.verify(token, "jwtkey", (err, userInfo) => {
-      if (err) return res.status(403).json("Token is not valid");
+    // jwt.verify(token, "jwtkey", (err, userInfo) => {
+    //   if (err) return res.status(403).json("Token is not valid");
       const q =
         "INSERT INTO posts(`title`, `desc`, `img`, `date`, `user_id`, `cat`) VALUES (?)";
 
@@ -35,7 +35,7 @@ export const addPost = (req, res) => {
         req.body.desc,
         uploadResult.secure_url,
         req.body.date,
-        userInfo.id,
+        req.body.user_id,
         req.body.cat,
       ];
 
@@ -44,21 +44,23 @@ export const addPost = (req, res) => {
 
         return res.status(200).json("Post Created Successfully!");
       });
-    });
+    // });
   })();
 };
 
 export const deletePost = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json("Not Authenticated");
+  // const token = req.cookies.access_token;
+  // console.log(req)
+  // console.log(token);
+  // if (!token) return res.status(401).json("Not Authenticated");
 
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid");
+  // jwt.verify(token, "jwtkey", (err, userInfo) => {
+  //   if (err) return res.status(403).json("Token is not valid");
 
     const postId = req.params.id;
-    const q = "DELETE FROM posts WHERE `id`=? AND `user_id`=?";
+    const q = "DELETE FROM posts WHERE `id`=?";
 
-    db.query(q, [postId, userInfo.id], (err, data) => {
+    db.query(q, [postId], (err, data) => {
       if (err || data.affectedRows === 0)
         return res
           .status(403)
@@ -66,15 +68,15 @@ export const deletePost = (req, res) => {
 
       return res.json("Post has been deleted successfully");
     });
-  });
+  // });
 };
 
 export const updatePost = (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) return res.status(401).json("Not Authenticated");
+  // const token = req.cookies.access_token;
+  // if (!token) return res.status(401).json("Not Authenticated");
 
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
-    if (err) return res.status(403).json("Token is not valid");
+  // jwt.verify(token, "jwtkey", (err, userInfo) => {
+  //   if (err) return res.status(403).json("Token is not valid");
 
     (async function () {
       // Configuration
@@ -110,12 +112,12 @@ export const updatePost = (req, res) => {
 
       const postId = req.params.id;
 
-      db.query(q, [...values, postId, userInfo.id], (err, data) => {
+      db.query(q, [...values, postId, req.body.user_id], (err, data) => {
         if (err) return res.status(500).json(err);
         return res.status(200).json("Post Updated Successfully!");
       });
     })();
-  });
+  // });
 };
 
 export const getAllPost = (req, res) => {
