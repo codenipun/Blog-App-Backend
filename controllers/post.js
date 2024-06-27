@@ -14,9 +14,7 @@ export const addPost = (req, res) => {
 
     // Upload an image
     const uploadResult = await cloudinary.uploader
-      .upload(`./uploads/${req.body.img}`, {
-        public_id: "blog-img",
-      })
+      .upload(`./uploads/${req.body.img}`, { folder: 'blog-imgs' })
       .catch((error) => {
         console.log(error);
       });
